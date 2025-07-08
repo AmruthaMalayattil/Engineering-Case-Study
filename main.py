@@ -37,7 +37,7 @@ def table_details(database_name, table_name, csv_file_path):
 # if you haven't created the database yet.)
 # create_sample_db() # Call this if you need to set up the sample DB
 
-database = 'edgered.db'
+database = 'testing.db'
 table1 = 'clients'
 table2 = 'payments'
 output_clients_csv = 'client_details.csv'
@@ -46,7 +46,7 @@ output_payments_csv = 'payments.csv'
 table_details(database, table1, output_clients_csv)
 table_details(database, table2, output_payments_csv)
 
-db_file = 'edgered.db'
+db_file = 'testing.db'
 
 with sqlite3.connect(database) as conn:
     print(f"Successfully connected to {database}")
