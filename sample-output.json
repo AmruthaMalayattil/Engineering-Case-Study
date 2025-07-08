@@ -1,0 +1,95 @@
+{
+    "summary": {
+        "total_clients": 1234,
+        "total_payments": 1234,
+        "oldest_payment": "2023-01-01T11:11:11",
+        "newest_payment": "2023-01-01T11:11:11",
+        "sum_all_payments": "$1,000.00",
+        "average_payment": "$1,000.00",
+        "payment_min": "$1,000.00",
+        "payment_quartile_1": "$1,000.00",
+        "payment_median": "$1,000.00",
+        "payment_quartile_3": "$1,000.00",
+        "payment_max": "$1,000.00",
+        "total_amt_paid_in_june_and_july": "$1,000.00",
+        "total_private_companies": 1234,
+        "total_num_payments_under_1_dollar": 1234,
+        "average_sole_trader_payment_in_2017": "$1,000.00"
+    },
+    "records": [
+        {
+            "client_id": 1279,
+            "entity_type": "Discretionary Trading Trust",
+            "entity_year_established": 2017,
+            "total_payments": 4,
+            "total_amt_paid": "$1,086,583.20",
+            "payments": [
+                {
+                    "transaction_id": 24808,
+                    "contract_id": 1608,
+                    "transaction_date": "2018-07-18T04:09:21",
+                    "payment_amt": "$999,999.70",
+                    "payment_code": "PAYMENT"
+                },
+                {
+                    "transaction_id": 24809,
+                    "contract_id": 1608,
+                    "transaction_date": "2018-07-18T04:09:21",
+                    "payment_amt": "$0.10",
+                    "payment_code": "PAYMENT"
+                },
+                {
+                    "transaction_id": 25385,
+                    "contract_id": 1608,
+                    "transaction_date": "2018-07-23T04:08:13",
+                    "payment_amt": "$83,333.40",
+                    "payment_code": "PAYMENT"
+                },
+                {
+                    "transaction_id": 25386,
+                    "contract_id": 1608,
+                    "transaction_date": "2018-07-23T04:08:13",
+                    "payment_amt": "$3,250.00",
+                    "payment_code": "PAYMENT"
+                }
+            ]
+        },
+        {
+            "client_id": 1280,
+            "entity_type": "Australian Private Company",
+            "entity_year_established": 2016,
+            "total_payments": 4,
+            "total_amt_paid": "$217,317.30",
+            "payments": [
+                {
+                    "transaction_id": 24710,
+                    "contract_id": 1603,
+                    "transaction_date": "2018-07-17T04:09:20",
+                    "payment_amt": "$200,000.50",
+                    "payment_code": "PAYMENT"
+                },
+                {
+                    "transaction_id": 24711,
+                    "contract_id": 1603,
+                    "transaction_date": "2018-07-17T04:09:20",
+                    "payment_amt": "$0.10",
+                    "payment_code": "PAYMENT"
+                },
+                {
+                    "transaction_id": 25075,
+                    "contract_id": 1603,
+                    "transaction_date": "2018-07-20T04:09:24",
+                    "payment_amt": "$16,666.80",
+                    "payment_code": "PAYMENT"
+                },
+                {
+                    "transaction_id": 25076,
+                    "contract_id": 1603,
+                    "transaction_date": "2018-07-20T04:09:24",
+                    "payment_amt": "$649.90",
+                    "payment_code": "PAYMENT"
+                }
+            ]
+        }
+    ]
+}
