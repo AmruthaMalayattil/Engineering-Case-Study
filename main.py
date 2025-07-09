@@ -1,9 +1,18 @@
 import sqlite3
 import csv
 import json
-from datetime import datetime
 import numpy as np
 import pandas as pd
+
+class NumpyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        elif isinstance(obj, np.floating):
+            return float(obj)
+        elif isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return json.JSONEncoder.default(self, obj)
 
 def table_details(database_name, table_name, csv_file_path):
     # Establish connection
@@ -58,7 +67,7 @@ with sqlite3.connect(database) as conn:
     #print(df_clients.info())
 
     df_payments = pd.read_sql_query(f"SELECT * FROM {table2} where client_id in (SELECT client_id FROM {table1})", conn)
-    print(df_payments)
+    #print(df_payments)
 
 
 summary = {}
@@ -82,7 +91,7 @@ summary["newest_payment"] = newest_payment_dt.strftime("%Y-%m-%dT%H:%M:%S")
 sum_all_payments = df_payments['payment_amt'].sum()
 average_payment = df_payments['payment_amt'].mean()
 payment_description = df_payments['payment_amt'].describe()
-print(payment_description)
+#print(payment_description)
 
 
 summary["sum_all_payments"] = f"${sum_all_payments:,.2f}"
@@ -120,7 +129,62 @@ sole_trader_payments_2017 = df_merged[
 average_sole_trader_payment_in_2017 = sole_trader_payments_2017['payment_amt'].mean()
 summary["average_sole_trader_payment_in_2017"] = f"${average_sole_trader_payment_in_2017:,.2f}"
 
-print("summary: ",summary)
+# print("summary: ",summary)
+
+records = []
+df_merged = pd.merge(df_clients, df_payments, on='client_id', how='inner')
+
+    # Group by client to aggregate total payments and amounts
+grouped_clients = df_merged.groupby('client_id')
+
+for client_id, client_group in grouped_clients:
+        # Get client-specific details (first row of the group is sufficient)
+    client_info = client_group.iloc[0]
+        
+        # Initialize payments list for the current client
+    payments_list = []
+    for _, payment_row in client_group.iterrows():
+        payments_list.append({
+                "transaction_id": payment_row['transaction_id'], # Mapping payment_id to transaction_id
+                "contract_id": payment_row['contract_id'],
+                "transaction_date": payment_row['transaction_date'].strftime("%Y-%m-%dT%H:%M:%S"),
+                "payment_amt": f"${payment_row['payment_amt']:,.2f}", # Mapping amount to payment_amt
+                "payment_code": payment_row['payment_code']
+            })
+
+        # Calculate total payments and total amount paid for the client
+    total_payments_count = len(client_group)
+    total_amt_paid_sum = client_group['payment_amt'].sum()
+
+    records.append({
+            "client_id": client_id,
+            "entity_type": client_info['entity_type'],
+            "entity_year_established": client_info['entity_year_established'],
+            "total_payments": total_payments_count,
+            "total_amt_paid": f"${total_amt_paid_sum:,.2f}",
+            "payments": payments_list
+        })
+    
+    # Sort records by client_id for consistent output
+records.sort(key=lambda x: x['client_id'])
+
+#print("records: ",records)
+output = {}
+output["summary"] = summary
+output['records'] = records
+output_pretty = json.dumps(output, indent=4, cls=NumpyEncoder)
+
+output_filename = "client_payment_records.json"
+
+try:
+    with open(output_filename, 'w') as f:
+        json.dump(output, f, indent=4, cls=NumpyEncoder)
+    print(f"Successfully wrote pretty-printed JSON to '{output_filename}'")
+except IOError as e:
+    print(f"Error writing to file '{output_filename}': {e}")
+except Exception as e:
+    print(f"An unexpected error occurred: {e}")
+
 
 
 
